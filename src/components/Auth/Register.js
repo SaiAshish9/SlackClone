@@ -83,16 +83,19 @@ this.setState({[e.target.name]:e.target.value})
 handleSubmit=e=>{
 
   e.preventDefault()
-this.setState({errors:[],loading:true})
 
 
   if(this.isFormValid()){
+
+    this.setState({errors:[],loading:true})
+
   firebase
   .auth()
   .createUserWithEmailAndPassword(this.state.email, this.state.password)
   .then((user)=>{
 
     console.log(user)
+    this.setState({loading:false})
 
     user.user.updateProfile({
           
@@ -104,6 +107,7 @@ this.setState({errors:[],loading:true})
 this.saveUser(user)
 .then(()=>{
   console.log('user saved')
+  this.setState({loading: false})
 })
 
     }).catch(err=>{
