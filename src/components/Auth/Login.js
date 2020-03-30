@@ -80,15 +80,15 @@ const {password,email,errors,loading}=this.state
       <React.Fragment>
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{maxWidth:450}}>
-            <Header as="h2" icon color="blue"   >
-                <Icon name="react" color="blue"/>
+            <Header as="h2" icon color="purple"   >
+                <Icon name="react" color="purple"/>
             </Header>
 
-            <Header as="h2" icon color="blue"   >
-            <Icon name="slack" color="blue" />
+            <Header as="h2" icon color="purple"   >
+            <Icon name="slack" color="purple" />
            </Header>
 
-           <Header as="h2" icon color="blue" textAlign="center"  >
+           <Header as="h2" icon color="purple" textAlign="center"  >
        Login to Sai's SlackChat
            </Header>
 
@@ -112,7 +112,7 @@ onSubmit={this.handleSubmit}
   
   
 
-  <Button disabled={loading} className={loading?'loading':''} color="blue" fluid size="large"  >
+  <Button disabled={loading} className={loading?'loading':''} color="purple" fluid size="large"  >
   Submit
 </Button>
 
