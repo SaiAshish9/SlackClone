@@ -4,6 +4,8 @@ import {Menu} from 'semantic-ui-react'
 
 import UserPanel from './UserPanel'
 
+import Channels from './Channels'
+
 export default class SidePanel extends Component {
     render() {
 
@@ -20,7 +22,7 @@ const {currentUser}=this.props
 
 <UserPanel currentUser={currentUser}/>
 
-
+<Channels currentUser={currentUser}/>
             </Menu>
         )
     }
