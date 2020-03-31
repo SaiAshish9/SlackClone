@@ -6,6 +6,8 @@ import UserPanel from './UserPanel'
 
 import Channels from './Channels'
 
+import DirectMessages from './DirectMessages'
+
 export default class SidePanel extends Component {
     render() {
 
@@ -23,6 +25,9 @@ const {currentUser}=this.props
 <UserPanel currentUser={currentUser}/>
 
 <Channels currentUser={currentUser}/>
+
+<DirectMessages currentUser={currentUser} />
+
             </Menu>
         )
     }

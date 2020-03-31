@@ -7,7 +7,7 @@ class MessagesHeader extends Component {
     render() {
 
 
-const {channelName,numUniqueUsers} = this.props
+const {channelName,numUniqueUsers,handleSearchChange,searchLoading,isPrivateChannel} = this.props
 
         return (
             <Segment clearImg style={{height:'6rem'}}>
@@ -16,7 +16,11 @@ const {channelName,numUniqueUsers} = this.props
                    <span>
 
 {channelName}
-                   <Icon name={"star outline"} color="black"/>
+
+
+{ !isPrivateChannel&& <Icon name={"star outline"} color="black"/>
+    }
+
                    </span>
 
 <Header.Subheader>
@@ -32,6 +36,8 @@ const {channelName,numUniqueUsers} = this.props
     icon="search"
     name="searchTerm"
     placeholder="Search Messages"
+    onChange={ handleSearchChange }
+    loading={searchLoading}
     
     />
 

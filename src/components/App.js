@@ -15,7 +15,7 @@ import MetaPanel from './MetaPanel/MetaPanel'
 import Messages from './Messages/Messages'
 
 
-const App = ({currentUser,currentChannel}) => {
+const App = ({currentUser,currentChannel,isPrivateChannel}) => {
   return (
   
 <Grid columns="equal" className="app" style={{background:'#eee'}}>
@@ -30,9 +30,11 @@ key={currentUser && currentUser.uid}
 
 <Grid.Column style={{marginLeft:320}}>
 
-<Messages key={currentChannel && currentChannel.id}
+<Messages 
+ key={currentChannel && currentChannel.id}
  currentChannel={currentChannel}
  currentUser={currentUser}
+ isPrivateChannel={isPrivateChannel}
  />
 
 </Grid.Column>
@@ -49,7 +51,8 @@ key={currentUser && currentUser.uid}
 
 const mapStateToProps =state =>({
   currentUser:state.user.currentUser,
-  currentChannel:state.channel.currentChannel
+  currentChannel:state.channel.currentChannel,
+  isPrivateChannel:state.channel.isPrivateChannel
 })
 
 export default connect(mapStateToProps)(App)
