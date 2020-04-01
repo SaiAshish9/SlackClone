@@ -7,7 +7,17 @@ class MessagesHeader extends Component {
     render() {
 
 
-const {channelName,numUniqueUsers,handleSearchChange,searchLoading,isPrivateChannel} = this.props
+const {
+    
+    channelName,
+    numUniqueUsers,
+    handleSearchChange,
+    searchLoading,
+    isPrivateChannel,
+    handleStar,
+    isChannelStarred
+
+} = this.props
 
         return (
             <Segment clearImg style={{height:'6rem'}}>
@@ -18,7 +28,15 @@ const {channelName,numUniqueUsers,handleSearchChange,searchLoading,isPrivateChan
 {channelName}
 
 
-{ !isPrivateChannel&& <Icon name={"star outline"} color="black"/>
+{ !isPrivateChannel&& (
+
+<Icon
+onClick={handleStar} 
+name={isChannelStarred?"star":"star outline"}
+color={isChannelStarred?"yellow":"black"}
+/>
+
+)
     }
 
                    </span>
