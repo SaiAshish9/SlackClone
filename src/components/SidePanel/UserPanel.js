@@ -1,18 +1,114 @@
 import React, { Component } from 'react'
 
-import {Image,Grid,Header,Icon, Dropdown} from 'semantic-ui-react'
+import {Button,Image,Grid,Header,Icon, Dropdown,Modal,Input} from 'semantic-ui-react'
 
 import firebase from '../../firebase'
 
-
+import AvatarEditor from 'react-avatar-editor'  
 
 class UserPanel extends Component {
   
 state={
-    user:this.props.currentUser
+    user:this.props.currentUser,
+    modal:false,
+    previewImage:'',
+    croppedImage:'',
+    blob:'',
+    uploadedCroppedImage:'',
+    storageRef:firebase.storage().ref(),
+    userRef:firebase.auth().currentUser,
+    usersRef: firebase.database().ref('users') ,
+    metadata:{
+        contentType:'image/jpeg'
+    }
+}
+
+openModal=()=>this.setState({modal:true})
+
+closeModal=()=>this.setState({modal:false})
+
+
+uploadCroppedImage=()=>{
+
+    const { storageRef,userRef,blob,metadata }=this.state
+
+
+    storageRef
+    .child(`avatar/user-${userRef.user}`)
+    .put(blob,metadata)
+    .then(snap=>{
+        snap.ref.getDownloadURL().then(downloadURL=>{
+
+            this.setState({uploadedCroppedImage:downloadURL},()=>{
+                this.changeAvatar()
+            })
+
+        })
+    })
+
+}
+
+changeAvatar=()=>{
+    this.state.userRef
+    .updateProfile({
+        photoURL:this.state.uploadedCroppedImage
+    })
+    .then(()=>{
+        console.log('PhotoURL updated')
+        this.closeModal()
+    })
+    .catch(err=>{
+        console.error(err)
+    })
+
+this.state.usersRef
+.child(this.state.user.uid)
+.update({avatar:this.state.uploadedCroppedImage})
+.then(()=>{
+    console.log('user avatar updated')
+})
+.catch(err=>{
+    console.error(err)
+})
+
+}
+
+handleCropImage=()=>{
+
+   if(this.avatarEditor){
+       this.avatarEditor.getImageScaledToCanvas().toBlob(blob=>{
+
+         let imageUrl=URL.createObjectURL(blob)
+
+         this.setState({
+             croppedImage:imageUrl,
+             blob
+         })
+
+       })
+   }
 }
 
 
+handleChange=e=>{
+   
+    const file=e.target.files[0]
+    const reader=new FileReader()
+
+if(file){
+    reader.readAsDataURL(file)
+
+    reader.addEventListener('load',()=>{
+       
+       this.setState({previewImage:reader.result})
+
+
+    })
+
+}
+
+
+}
 
 
   handleSignOut=()=>{
@@ -32,7 +128,7 @@ state={
   text:<span>Signed in as <strong>{this.state.user&&this.state.user.displayName}</strong></span>
       },
       {   key:'avatar',
-          text:<span>Change Avatar</span>
+          text:<span onClick={this.openModal}  >Change Avatar</span>
       },
       {   key:'signout',
           text:<span onClick={
@@ -45,7 +141,7 @@ state={
   
     render() {
 
-        const {user}=this.state
+        const {user , modal ,previewImage, croppedImage  }=this.state
 
         const {primaryColor}= this.props
 
@@ -78,6 +174,107 @@ options={this.dropdownOptions()}
 />
 </Header>
 
+
+<Modal basic open={modal} onClose={this.closeModal}>
+
+<Modal.Header>
+    Change Avatar
+</Modal.Header>
+
+<Modal.Content>
+
+<Input 
+fluid
+type='file'
+label='New Avatar'
+name='previewImage'
+onChange={this.handleChange}
+
+/>
+
+
+<Grid centered stackable columns={2} >
+
+<Grid.Row centered >
+
+<Grid.Column className='ui center aligned grid' >
+
+
+{previewImage && (
+
+<AvatarEditor
+  image={previewImage}
+  width={120}
+  height={120}
+  border={50}
+  scale={1.2}
+  ref={node=>(this.avatarEditor=node  )}
+
+/>
+
+)}
+
+
+</Grid.Column>
+
+
+<Grid.Column>
+
+
+{
+    croppedImage && (
+        <Image  
+        style={{margin:'3.5em auto'}}
+        width={100}
+        height={100}
+        src={croppedImage}
+        />
+    )
+}
+
+
+</Grid.Column>
+
+
+
+</Grid.Row>
+
+
+</Grid>
+
+
+</Modal.Content>
+
+<Modal.Actions>
+
+{croppedImage && <Button color="green" inverted 
+onClick={this.uploadCroppedImage}
+ >
+
+<Icon name="save"  /> Change Avatar
+
+
+</Button>}
+
+<Button color="green" inverted onClick={this.handleCropImage} >
+
+<Icon name="image"  /> Preview
+
+
+</Button>
+
+<Button color="red" inverted onClick={this.closeModal} >
+
+<Icon name="remove"  /> Cancel
+
+
+</Button>
+
+
+</Modal.Actions>
+
+
+</Modal>
 
                 </Grid.Column>
             </Grid>

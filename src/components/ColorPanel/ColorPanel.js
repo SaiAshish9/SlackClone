@@ -37,6 +37,22 @@ componentDidMount(){
 }
 
 
+componentWillUnmount(){
+    this.removeListener()
+}
+
+
+removeListener=()=>{
+
+this.state.usersRef
+.child(`${this.state.user.uid}/colors`).off()
+
+
+}
+
+
+
+
 displayUserColors=colors=>(
 
     colors.length>0 && colors.map((color,i)=>((

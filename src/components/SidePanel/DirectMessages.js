@@ -27,6 +27,23 @@ componentDidMount(){
 
 }
 
+componentWillUnmount(){
+   
+    this.removeListeners()
+
+
+}
+
+removeListeners=()=>{
+    this.state.usersRef.off()
+
+this.state.presenceRef.off()
+
+this.state.connectedRef.off()
+
+
+}
+
 
 isUserOnline=user=>user.status==='online'
 

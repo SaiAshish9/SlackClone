@@ -19,6 +19,7 @@ state={
     channelName:'',
     channel:null,
     channelDetails:'',
+    typingRef:firebase.database().ref('typing'),
     messagesRef:firebase.database().ref('messages'),
     channelsRef:firebase.database().ref('channels'),
     notifications:[],
@@ -35,6 +36,14 @@ componentWillUnmount() {
 
   removeListeners = () => {
     this.state.channelsRef.off();
+
+this.state.channels.forEach(channel =>{
+
+this.state.messagesRef.child(channel.id).off();
+
+
+})
+
   };
 
 
@@ -135,6 +144,11 @@ changeChannel=channel=>{
     this.props.setPrivateChannel(false)
     
     this.setState({channel})
+
+    this.state.typingRef
+    .child(this.state.channel.id)
+    .child(this.state.user.uid)
+    .remove()
 
 
     this.clearNotifications()
