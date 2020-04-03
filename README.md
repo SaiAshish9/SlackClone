@@ -1,5 +1,5 @@
 
-##Firebase Storage Rules:
+Firebase Storage Rules:
 
 rules_version = '2';
 service firebase.storage {
