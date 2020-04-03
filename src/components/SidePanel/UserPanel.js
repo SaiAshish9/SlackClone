@@ -34,7 +34,7 @@ uploadCroppedImage=()=>{
 
 
     storageRef
-    .child(`avatar/user-${userRef.user}`)
+    .child(`avatar/users/${userRef.user}`)
     .put(blob,metadata)
     .then(snap=>{
         snap.ref.getDownloadURL().then(downloadURL=>{
