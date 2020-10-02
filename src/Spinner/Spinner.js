@@ -11,3 +11,5 @@ const Spinner = () => {
 }
 
 export default Spinner
+
+// spinner locker 
